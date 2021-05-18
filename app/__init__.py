@@ -1,14 +1,18 @@
 from flask import Flask
-from flask.config import Config
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
+from flask_migrate import Migrate
 
 
-def create_app(config_class=Config):
-    app = Flask(__name__)
+app = Flask(__name__)
+app.config.from_object(Config)
 
-    with app.app_context():
-        from .import routes
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-    return app
+from .import routes, models
+
+# return app, db
 
 
     
